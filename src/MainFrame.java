@@ -49,6 +49,9 @@ public class MainFrame {
     private JScrollPane logScrollPane;
 
 
+
+    private Dimension boundary;
+
     private BufferedImage bufferedImage;
 
     private BufferedImage lastInstance;
@@ -99,9 +102,11 @@ public class MainFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(3, 3, 3, 3);
 
+        boundary = new Dimension(700, 400);
+
     }
 
-    void createLocation() {
+    private void createLocation() {
 
         gbc.anchor = GridBagConstraints.EAST;
         gbc.weightx = 0.5;
@@ -213,7 +218,7 @@ public class MainFrame {
         frame.setVisible(true);
     }
 
-    public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
+    private static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
 
         int new_width = imgSize.width;
         int new_height = imgSize.height;
@@ -231,7 +236,7 @@ public class MainFrame {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////                Select File Listener
-    public class SelectFileListener implements KeyListener {
+    private class SelectFileListener implements KeyListener {
 
         boolean isPressed = false;
 
@@ -255,13 +260,13 @@ public class MainFrame {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////                   Threshold Listener
-    public class ThresholdListener implements ChangeListener {
+    private class ThresholdListener implements ChangeListener {
 
         @Override
         public void stateChanged(ChangeEvent e) {
             if(lastInstance != null) {
                 BufferedImage grayImage = GenerateImage.thresholdImage(bufferedImage, thresholdSlider.getValue());
-                Dimension boundary = new Dimension(700, 700);
+
                 Dimension d = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
                 Dimension scaled = getScaledDimension(d, boundary);
                 Image img = grayImage.getScaledInstance(scaled.width, scaled.height, Image.SCALE_SMOOTH);
@@ -282,7 +287,7 @@ public class MainFrame {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////                   Select Button Listener
-    public class SelectButtonListener implements ActionListener{
+    private class SelectButtonListener implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -319,15 +324,15 @@ public class MainFrame {
 
                         for (int i = 0; i < number - 1; i++) {
                             BufferedImage temp = GenerateImage.getRandomizedImage(width, height);
-                            ImageIO.write(temp, "png", new File(saveImageField.getText() + "\\Viscry " + (i + 1) + ".png"));
+                            ImageIO.write(temp, "png", new File(saveImageField.getText() + "\\VisCry " + (i + 1) + ".png"));
                             lastKey = GenerateImage.getExcludedImage(lastKey, temp, isEven);
 
-                            logMessages.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Image \"Viscry " + (i + 1) + ".png\" is saved\n");
+                            logMessages.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Image \"VisCry " + (i + 1) + ".png\" is saved\n");
                         }
                         lastKey = GenerateImage.getExcludedImage(lastKey, lastInstance, isEven);
                         ImageIO.write(lastKey, "png", new File(saveImageField.getText() + "\\VisCry " + (number) + ".png"));
 
-                        logMessages.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Image \"VisCry" + number + ".png\" is saved\n");
+                        logMessages.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Image \"VisCry " + number + ".png\" is saved\n");
                         logMessages.append("\n=========================ENCRYPTING IS DONE SUCCESSFULLY!============================\n");
                     }
                     else {
@@ -349,7 +354,7 @@ public class MainFrame {
             bufferedImage = ImageIO.read(new File(filePathAndName));
 
             BufferedImage grayImage = GenerateImage.thresholdImage(bufferedImage, thresholdSlider.getValue());
-            Dimension boundary = new Dimension(700, 700);
+
             Dimension d = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
             Dimension scaled = getScaledDimension(d, boundary);
             Image img = grayImage.getScaledInstance(scaled.width, scaled.height, Image.SCALE_SMOOTH);
