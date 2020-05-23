@@ -48,6 +48,10 @@ public class MainFrame {
 
     private JScrollPane logScrollPane;
 
+    private JFileChooser fileChooser;
+
+    private FileDialog fileDialog;
+
 
 
     private Dimension boundary;
@@ -98,6 +102,11 @@ public class MainFrame {
         logMessages.setFont(new Font(logMessages.getFont().getFontName(), logMessages.getFont().getStyle(), logMessages.getFont().getSize() + 2));
         logMessages.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": VisCry opened\n");
         logScrollPane = new JScrollPane(logMessages);
+
+        fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        fileDialog = new FileDialog(frame, "Select image");
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(3, 3, 3, 3);
@@ -292,7 +301,7 @@ public class MainFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(selectImageButton)){
-                FileDialog fileDialog = new FileDialog(frame, "Select image");
+
                 fileDialog.setVisible(true);
                 if(fileDialog.getFile() != null && fileDialog.getDirectory() != null){
                     selectImage(fileDialog.getDirectory() + fileDialog.getFile());
@@ -301,8 +310,7 @@ public class MainFrame {
 
 
             if(e.getSource().equals(saveImageButton)){
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
 
                 if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION){
                     saveImageField.setText(fileChooser.getSelectedFile().toString());
